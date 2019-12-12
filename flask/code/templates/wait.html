@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=460px" />
+<title>待機</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
+<script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='socket.io.slim.js') }}"></script>
+</head>
+<body>
+	<!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P8DV9QV"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+  <header id="top">
+    <p id="top-event"><span id="top-red-right"></span><span id="top-orange-right"></span><strong>関西大学高槻キャンパス祭スタジオイベント</strong><span id="top-red-left"></span><span id="top-orange-left"></span></p>
+    <h1 id="top-mcs">Media Creative Supporter Presents</h1>
+    <img src="{{ url_for('static', filename='img/cf2019.svg') }}" alt="Let's answer">
+    <h1 id="date">2019/5/26 (<span class="font_red">SUN</span>)</h1>
+		<h1 class="wait">もうしばらくお待ちください</h1>
+    <div id="scroll"><a href="#about"><span id="scroll-arrow"></span><div>Scroll</div></a></div>
+  </header>
+  <main>
+    <section class="main-section" id="about">
+      <h2 class="color-mix">体感しよう、MCSの世界を</h2>
+      <p>今年のMCSのスタジオイベントのコンセプトは</p>
+      <strong id="catchphrase">「番組を作るのは<span class="dot_add">あなた</span>です」</strong>
+      <p>
+        関西大学の学生3人をゲストとして招き、<br/>
+        観客の方もスマートフォンを通して<br/>
+        企画に参加していただきます。<br/>
+        是非スタジオにきてMCSをリアルに感じてください。
+      </p>
+    </section>
+    <section class="main-section" id="event">
+      <h2 class="color-mix">公演情報</h2>
+      <h3>スタジオイベント</h3>
+      <h3>『Let'answer!~番組を作るのは「あなた」です~』</h3>
+      <table id="main-event-table">
+        <tr>
+          <th></th>
+          <th>1st</th>
+          <th>2nd</th>
+        </tr>
+        <tr>
+          <th>OPEN</th>
+          <td>10:30~11:00</td>
+          <td>14:00~14:30</td>
+        </tr>
+        <tr>
+          <th>START</th>
+          <td>11:00~11:30</td>
+          <td>14:30~15:00</td>
+        </tr>
+      </table>
+      <strong id="place">場所：関西大学高槻キャンパス C棟 スタジオ</strong>
+      <p class="font_red">※１参加していただくには必ず整理券が必要です。</p>
+      <p class="font_red">※２整理券は9時よりC棟前で配布いたします。</p>
+    </section>
+    <section class="main-section" id="access">
+      <h2 class="color-mix">アクセス</h2>
+      <ul>
+        <li>JR高槻駅から来た乗り場5番目の「関西大学」行きに乗車し「関西大学」で下車</li>
+        <li>
+          JR摂津富田駅から駅北側のバス乗り場１番の「関西大学」「萩谷」「萩谷総合公園」行きのいずれかに乗車し「関西大学」で下車
+        </li>
+      </ul>
+    </section>
+    <section class="main-section" id="event">
+      <h2 class="color-mix">模擬店情報</h2>
+      <h3>模擬店『わくわくワッフル』</h3>
+      <div>
+        <p>甘〜いワッフルに<br/>
+          蜂蜜がかかった<br/>
+          美味しい逸品。<br/>
+          おひとついかがですか？？<br/>
+          1つ180円〜です<br/>
+          なお、営業時間は10:00~になります！</p>
+      </div>
+      <div>
+        <img src="{{ url_for('static', filename='img/waffuru.svg') }}" alt="waffuru">
+      </div>
+    </section>
+  </main>
+  <footer>
+      <a href="https://mcs-kutc.com/"><img src="{{ url_for('static', filename='img/mcs.svg') }}" alt="Media Creative Supporter"><a>
+  </footer>
+<script>//socket
+	var socket = io.connect(location.origin+"/socket");
+	socket.on('connect', function(msg) {
+		});
+	socket.on('message', function(msg) {
+	// $('#websocket').text(msg)
+		if(msg=="RELOAD") {
+			location.reload();
+		}
+	});
+	$(function() {
+	$(".color-mix").children().addBack().contents().each(function(){
+			if (this.nodeType == 3) {
+					$(this).replaceWith($(this).text().replace(/(\S)/g, "<span>$&</span>"));
+			}
+	});
+});
+</script>
+</body>
+</html>

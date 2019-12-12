@@ -1,0 +1,197 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=460px" />
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>4択クイズ</title>
+<script src="{{ url_for('static', filename='index.js') }}"></script>
+<script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='road.css') }}">
+<script src="{{ url_for('static', filename='socket.io.slim.js') }}"></script>
+
+</head>
+
+<body>
+	<img src="{{ url_for('static', filename='img/rogo.svg') }}"  height="100px">
+	<aside id="wait" class="hidden" style="text-align:center">
+		<div class="loader">
+		</div>
+		<div class="text">
+			<p>回答完了しました</p>
+			<p>少々お待ちください</p>
+			<p class="mini">画面をそのままの状態にしておいて下さい。<br/>
+			※画面が切り替わったり、スリープ状態になってしまうと、<br/>接続が切れてしまう恐れがあります</p>
+		</div>
+	</aside>
+	<main>
+		<aside id="main" class="open">
+			<div id="quizMain">
+				<h1 id="number">第◯門</h1>
+				<u><p id="Question">ここに問題文が出ます。</p></u>
+				<div id="post_quiz_ans" ontouchstart="">
+					<!--問題が入る-->
+					<div class="ans_box"><p> １</p>
+						<input id='quiz1' type='button' onclick='Quiz(1)'>
+					</div>
+					<div class="ans_box"><p> ２</p>
+						<input id='quiz2' type='button' onclick='Quiz(2)'>
+					</div>
+					<div class="ans_box"><p> ３</p>
+						<input id='quiz3' type='button' onclick='Quiz(3)'>
+					</div>
+					<div class="ans_box"><p> ４</p>
+						<input id='quiz4' type='button' onclick='Quiz(4)'>
+					</div>
+				</div>
+				<p>＊１度回答すると戻れません</p>
+				<p>＊更新しないでください</p>
+			</div>
+		</aside>
+	</main>
+
+	<section id="Correct" class="hidden">
+		<div class="ans">
+			<p style="color:red">正解です！！</p>
+		</div>
+	</section>
+
+	<section id="Incorrect" class="hidden">
+		<div class="ans">
+			<p style="color:blue">不正解です。</p>
+		</div>
+	</section>
+
+	<section id="coupon" class="hidden">
+		<div　class="Coupon">
+			<h2 style="font-size:8vw;color:red;">全問正解おめでとう！！</h2>
+			<p>全問正解おめでとうございました。<br/>
+				おかえりの際にこの画面をスタッフに見せると特典が！？<br/><br/>
+				※画面を閉じてしまわれますともとに戻れなくなる場合がありますので、この画面のスクリーンショットを撮ってください。</p>
+		</div>
+	</section>
+	<section id="nocoupon" class="hidden">
+		<div　class="NoCoupon">
+			<h2>ご参加ありがとうございました。</h2>
+			<p>本日はスタジオイベント「Let's answer」にご参加くださり誠にありがとうございます。<br/>
+				引き続きMCS主催Let's answerをお楽しみください。</p>
+		</div>
+	</section>
+
+	<footer>
+		<img src="{{ url_for('static', filename='img/mcs.svg') }}" class="MCS">
+	</footer>
+
+	<script>
+		var socket = io.connect(location.origin+"/socket");//WebSocket
+		var count=0;/*正解数をカウント*/
+		var i={{quiz_num}};/*iは何問目かをカウントさせます。*/
+		var j=i+1;//何回目かをカウント
+		var QUESTION= ["高槻市のゆるキャラ「はにたん」の誕生日はいつ？", "大阪府の中で高槻市の大きさのランキングは何位でしょうか？" ,"高槻市のキャッチフレーズ『水と〇〇の生活文化都市』〇〇に入るものは？"];
+		var text = document.getElementById("number");
+		var qtext = document.getElementById("Question");
+		text.textContent ="第"+j+"問";
+		qtext.textContent=QUESTION[i];
+		var elm = document.getElementById('wait'); //待機画面
+		var main = document.getElementById('main'); //問題の画面
+		var correct = document.getElementById('Correct'); //正解画面
+		var incorrect = document.getElementById('Incorrect'); //不正解画面
+		var quiz1 = document.getElementById("quiz1"); //選択肢１
+		var quiz2 = document.getElementById("quiz2"); //選択肢２
+		var quiz3 = document.getElementById("quiz3"); //選択肢３
+		var quiz4 = document.getElementById("quiz4"); //選択肢４
+		var coupon = document.getElementById("coupon");//coupon
+		var nocoupon = document.getElementById("nocoupon");//nocoupon
+		var num = -1;
+
+/*正解以外の選択肢を洗濯した時*/
+	function Quiz(number){
+		num = number;
+		main.className = 'hidden';
+		elm.className = 'open';
+
+		/*testのコピー*/
+		$(function(){
+			$('#post_quiz_ans').on('click', function(){
+				var num = $(".quiz_radio:checked").val();
+				$.ajax({
+					url: '/api/gCWZKf4B/socket',
+					type: 'POST',
+					data: JSON.stringify({
+						"message": num,
+						"key": "ChQUATbZ"
+					}),
+					dataType: 'json',
+					contentType: 'application/json'
+				})
+				.done(function(data) {
+					$('#quiz').text(data.message);
+				})
+				.fail(function() {
+					$('#quiz').text('fail');
+				})
+			});
+		});
+	};
+
+	function quiz_change(){
+		if(i==0){
+			quiz1.value="12月24日";
+			quiz2.value="6月19日";
+			quiz3.value="8月20日";
+			quiz4.value="4月3日";
+		}else if(i==1){
+			quiz1.value="1~5位";
+			quiz2.value="6~10位";
+			quiz3.value="11~15位";
+			quiz4.value="16~20位";
+		}else if(i==2){
+			quiz1.value="みどり";
+			quiz2.value="れきし";
+			quiz3.value="けんこう";
+			quiz4.value="おもいやり";
+		}
+			text.textContent ="第"+j+"問";
+			qtext.textContent=QUESTION[i];
+			i++;
+			j++;
+			num=0;
+	}
+		quiz_change();
+	//socket
+		socket.on('message', function(msg) {// <- msgに数字が入ってく
+			if(msg == num) {
+				//正解処理
+				correct.className = "open";
+				elm.className = "hidden";
+				main.className = "hidden";
+				count++;
+			}else if(msg == 'RELOAD') {
+					location.reload();
+			}else if(msg=='RESET'){
+					if(i<=2){
+					quiz_change()
+					main.className = "open";
+					elm.className = "hidden";
+					correct.className = "hidden";
+					incorrect.className = "hidden";
+				}else if(i >= 3 && count >= 3){
+					coupon.className ="open";
+					elm.className = "hidden";
+					correct.className = "hidden";
+				}else{
+					incorrect.className = "hidden";
+					correct.className = "hidden";
+					nocoupon.className ="open";
+					}
+			}else{
+				incorrect.className = "open";
+				main.className = "hidden";
+				elm.className = "hidden";
+			}
+		});
+
+/*iが動いているかの確認*/
+	</script>
+</body>
+</html>

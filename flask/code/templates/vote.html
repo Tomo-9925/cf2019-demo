@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=460px"/>
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>トータライザー</title>
+<script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='socket.io.slim.js') }}"></script>
+<script src="{{ url_for('static', filename='index.js') }}"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='road.css') }}"/>
+</head>
+
+<body>
+	<header>
+	  <img src="{{ url_for('static', filename='img/rogo.svg') }}"  height="100px">
+	</header>
+	<aside id="wait" class="hidden">
+		<div class="loader">
+		</div>
+		<div class="text">
+			<p>投票完了しました</p>
+			<p>少々お待ちください</p>
+			<p class="mini">画面をそのままの状態にしておいて下さい。<br/>
+			※画面が切り替わったり、スリープ状態になってしまうと、<br/>接続が切れてしまう恐れがあります</p>
+		</div>
+	</aside>
+
+	<main>
+		<aside id="main" class="open">
+			<div class="Vote" ontouchstart="">
+				<input id="post_vote" class="switch_yes" type="image" src="{{ url_for('static', filename='img/yes.svg') }}" height="120px" onclick="voteOn()"><input class="switch_no" type="image" src="{{ url_for('static', filename='img/no.svg') }}" height="120px" onclick="voteOn()">
+				<p>＊投票すると戻れません</p>
+			</div>
+		</aside>
+	</main>
+
+	<footer>
+		<img src="{{ url_for('static', filename='img/mcs.svg') }}" class="MCS">
+	</footer>
+
+	<script>
+		var elm = document.getElementById('wait');
+		var main = document.getElementById('main');
+
+		//socket
+		var socket = io.connect(location.origin+"/socket");
+		socket.on('connect', function(msg) {
+		});
+		socket.on('message', function(msg) {
+			// $('#websocket').text(msg)
+			if(msg=="RELOAD") {
+				location.reload();
+			} else if(msg=="RESET") {
+				main.className = 'open';
+				elm.className = 'hidden';
+			}
+		});
+
+		function voteOn() {
+			main.className = 'hidden';
+	    elm.className = 'open';
+		};
+// これでデータ送る
+			$(function(){
+				$('#post_vote').on('click', function(){
+					$.ajax({
+						url: '/api/vote',
+						type: 'POST',
+						dataType: 'json',
+						contentType: 'application/json'
+					})
+					.done(function(data){
+						$('#vote').text(data.message);
+					})
+					.fail(function() {
+						$('#vote').text('fail');
+					})
+				});
+			});
+	</script>
+</body>
+</html>

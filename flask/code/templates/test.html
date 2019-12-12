@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>cf2019 tests</title>
+  <script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='socket.io.slim.js') }}"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='skeleton.min.css') }}">
+
+  <script src="index.js"></script>
+  <style>
+    strong {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <h1>cf2019 tests</h1>
+    <section>
+      <h2>websocket</h2>
+      <strong id="websocket">--</strong>
+      <p>
+        サーバからリアルタイムで送信されたメッセージを受信します．<br/>
+        送られてきたメッセージを画面の更新などを行うことを想定しています．<br/>
+        メッセージは現段階ではstatusをPOSTしたときとvoteをDsELETEしたとき，quizのPOSTとRESETで送信されます．
+      </p>
+      <script>
+        var socket = io.connect(location.origin+"/socket");
+        socket.on('connect', function(msg) {
+          $('#websocket').text(msg)
+        });
+        socket.on('message', function(msg) {
+          $('#websocket').text(msg)
+        });
+      </script>
+    </section>
+    <section>
+      <h2>status</h2>
+      <strong id="status">--</strong>
+      <button id="get_status">GET</button>
+      <select name="select_status" id="select_status">
+        <option value="0">準備中</option>
+        <option value="1">トータライザ</option>
+        <option value="2">ノイズ</option>
+        <option value="3">クイズ1</option>
+        <option value="4">クイズ2</option>
+        <option value="5">クイズ3</option>
+        <option value="6">終了</option>
+      </select>
+      <button id="post_status">POST</button>
+      <p>
+        現在の状況を取得します．<br/>
+        セレクタから状況を選択しPOSTでstatusを変更します．<br/>
+        GETで現在の状況を取得します．<br/>
+        また，POST後はwebsocketで参加者全員にRELOADメッセージを送信します．
+      </p>
+      <script>
+        // jQueryのコピペ
+        $(function(){
+          $('#get_status').on('click', function(){
+            $.ajax({
+              url: '/api/status',
+              type: 'GET',
+              dataType: 'json',
+              contentType: 'application/json'  // 無いとjsonと認識されない
+            })
+            // 成功
+            .done(function(data) {
+              $('#status').text(data.status);
+            })
+            // 失敗
+            .fail(function(data){
+              $('#status').text('fail');
+            })
+          });
+          $('#post_status').on('click', function(){
+            var status = Number($('#select_status').val());
+            $.ajax({
+              url: '/api/gCWZKf4B/status',
+              type: 'POST',
+              data: JSON.stringify({
+                "status": status,
+                "key": "ChQUATbZ"
+              }),
+              dataType: 'json',
+              contentType: 'application/json'
+            })
+            .done(function(data) {
+              $('#status').text(data.message);
+            })
+            .fail(function() {
+              $('#status').text('fail');
+            })
+          });
+        });
+      </script>
+    </section>
+    <section>
+      <button id="reload">RELOAD</button>
+      <p>RELOADボタンを押すと参加者全員にRELOADを送ります</p>
+      <script>
+        $(function(){
+          $('#reload').on('click', function(){
+            $.ajax({
+              url: '/api/gCWZKf4B/socket',
+              type: 'POST',
+              data: JSON.stringify({
+                "message": "RELOAD",
+                "key": "ChQUATbZ"
+              }),
+              dataType: 'json',
+              contentType: 'application/json'
+            })
+            .done(function(data) {
+              $('#load').text(data.message);
+            })
+            .fail(function() {
+              $('#load').text('fail');
+            })
+          });
+        });
+      </script>
+    </section>
+    <section>
+      <h2>vote</h2>
+      <strong id="vote">--</strong>
+      <button id="get_vote">GET</button>
+      <button id="post_vote">POST</button>
+      <button id="delete_vote">DELETE</button>
+      <p>
+        投票状況が表示されます．<br/>
+        POSTでサーバにIPアドレスが登録します．<br/>
+        GETでサーバに記録されたIPアドレスの数を取得します．<br/>
+        DELETEでサーバに登録されたIPアドレスを削除します．<br/>
+        また，DELETE後はwebsocketで参加者全員にRESETメッセージを送信します．
+      </p>
+      <script>
+        $(function(){
+          $('#get_vote').on('click', function(){
+            $.ajax({
+              url: '/api/gCWZKf4B/vote',
+              type: 'GET',
+              dataType: 'json',
+              contentType: 'application/json'
+            })
+            .done(function(data) {
+              $('#vote').text(String(data.num));
+            })
+            .fail(function() {
+              $('#vote').text('fail');
+            })
+          });
+          $('#post_vote').on('click', function(){
+            $.ajax({
+              url: '/api/vote',
+              type: 'POST',
+              dataType: 'json',
+              contentType: 'application/json'
+            })
+            .done(function(data) {
+              $('#vote').text(data.message);
+            })
+            .fail(function() {
+              $('#vote').text('fail');
+            })
+          });
+          $('#delete_vote').on('click', function(){
+            $.ajax({
+              url: '/api/gCWZKf4B/vote',
+              type: 'DELETE',
+              data: JSON.stringify({
+                'key': 'ChQUATbZ'
+              }),
+              dataType: 'json',
+              contentType: 'application/json'
+            })
+            .done(function(data) {
+              $('#vote').text(data.message);
+            })
+            .fail(function() {
+              $('#vote').text('fail');
+            })
+          });
+        });
+      </script>
+    </section>
+    <section>
+      <h2>quiz</h2>
+      <strong id="quiz">--</strong>
+      <label><input type="radio" class="quiz_radio" name="quiz_radio" value="1" checked>1</label>
+      <label><input type="radio" class="quiz_radio" name="quiz_radio" value="2" >2</label>
+      <label><input type="radio" class="quiz_radio" name="quiz_radio" value="3" >3</label>
+      <label><input type="radio" class="quiz_radio" name="quiz_radio" value="4" >4</label>
+      <button id="post_quiz_ans">POST</button>
+      <button id="post_quiz_reset">RESET</button>
+      <p>
+        クイズの制御を行います．<br/>
+        POSTでwebsocketで参加者全員に数値を送信します．
+        RESETでwebsocketで参加者全員にRESETメッセージを送信します．
+      </p>
+      <script>
+        $(function(){
+          $('#post_quiz_ans').on('click', function(){
+            var num = $(".quiz_radio:checked").val();
+            $.ajax({
+              url: '/api/gCWZKf4B/socket',
+              type: 'POST',
+              data: JSON.stringify({
+                "message": num,
+                "key": "ChQUATbZ"
+              }),
+              dataType: 'json',
+              contentType: 'application/json'
+            })
+            .done(function(data) {
+              $('#quiz').text(data.message);
+            })
+            .fail(function() {
+              $('#quiz').text('fail');
+            })
+          });
+          $('#post_quiz_reset').on('click', function(){
+            $.ajax({
+              url: '/api/gCWZKf4B/socket',
+              type: 'POST',
+              data: JSON.stringify({
+                "message": "RESET",
+                "key": "ChQUATbZ"
+              }),
+              dataType: 'json',
+              contentType: 'application/json'
+            })
+            .done(function(data) {
+              $('#quiz').text(data.message);
+            })
+            .fail(function() {
+              $('#quiz').text('fail');
+            })
+          });
+        });
+      </script>
+    </section>
+    <section>
+      <button id="reload">RELOAD</button>
+      <script>
+        $(function(){
+          $('#reload').on('click', function(){
+            $.ajax({
+              url: '/api/gCWZKf4B/socket',
+              type: 'POST',
+              data: JSON.stringify({
+                "message": "RELOAD",
+                "key": "ChQUATbZ"
+              }),
+              dataType: 'json',
+              contentType: 'application/json'
+            })
+            .done(function(data) {
+              $('#load').text(data.message);
+            })
+            .fail(function() {
+              $('#load').text('fail');
+            })
+          });
+        });
+      </script>
+    </section>
+  </main>
+</body>
+</html>

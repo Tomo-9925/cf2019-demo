@@ -1,0 +1,219 @@
+/*
+  Reset CSS
+*/
+
+html{box-sizing:border-box;overflow-y:scroll;-webkit-text-size-adjust:100%}*,:after,:before{background-repeat:no-repeat;box-sizing:inherit}:after,:before{text-decoration:inherit;vertical-align:inherit}*{padding:0;margin:0}audio:not([controls]){display:none;height:0}hr{overflow:visible}article,aside,details,figcaption,figure,footer,header,main,menu,nav,section,summary{display:block}summary{display:list-item}small{font-size:80%}[hidden],template{display:none}abbr[title]{border-bottom:1px dotted;text-decoration:none}a{background-color:transparent;-webkit-text-decoration-skip:objects}a:active,a:hover{outline-width:0}code,kbd,pre,samp{font-family:monospace,monospace}b,strong{font-weight:bolder}dfn{font-style:italic}mark{background-color:#ff0;color:#000}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}input{border-radius:0}[role=button],[type=button],[type=reset],[type=submit],button{cursor:pointer}[disabled]{cursor:default}[type=number]{width:auto}[type=search]{-webkit-appearance:textfield}[type=search]::-webkit-search-cancel-button,[type=search]::-webkit-search-decoration{-webkit-appearance:none}textarea{overflow:auto;resize:vertical}button,input,optgroup,select,textarea{font:inherit}optgroup{font-weight:700}button{overflow:visible}[type=button]::-moz-focus-inner,[type=reset]::-moz-focus-inner,[type=submit]::-moz-focus-inner,button::-moz-focus-inner{border-style:0;padding:0}[type=button]::-moz-focus-inner,[type=reset]::-moz-focus-inner,[type=submit]::-moz-focus-inner,button:-moz-focusring{outline:1px dotted ButtonText}[type=reset],[type=submit],button,html [type=button]{-webkit-appearance:button}button,select{text-transform:none}button,input,select,textarea{background-color:transparent;border-style:none;color:inherit}select{-moz-appearance:none;-webkit-appearance:none}select::-ms-expand{display:none}select::-ms-value{color:currentColor}legend{border:0;color:inherit;display:table;max-width:100%;white-space:normal}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}img{border-style:none}progress{vertical-align:baseline}svg:not(:root){overflow:hidden}audio,canvas,progress,video{display:inline-block}@media screen{[hidden~=screen]{display:inherit}[hidden~=screen]:not(:active):not(:focus):not(:target){position:absolute!important;clip:rect(0 0 0 0)!important}}[aria-busy=true]{cursor:progress}[aria-controls]{cursor:pointer}[aria-disabled]{cursor:default}::-moz-selection{background-color:#b3d4fc;color:#000;text-shadow:none}::selection{background-color:#b3d4fc;color:#000;text-shadow:none}
+
+/*
+  GENERAL
+*/
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Noto Sans", "Noto Sans JP", "Noto Sans CJK JP", "Helvetica Neue", "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN W3", "Segoe UI", メイリオ, Meiryo, sans-serif;
+  font-size: 1.5em;
+  line-height: 1.75;
+  letter-spacing: 0.05em;
+  text-align: center;
+  background-color: #f3efe7;
+}
+
+ul {
+  text-align: left;
+}
+.font_red{
+  color: red;
+}
+/*
+  HEADER
+*/
+#top .wait{
+  padding-top:10vh;
+}
+#top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  padding: 5rem 0;
+
+}
+
+#top-event {
+  font-size: 4vw;
+  margin-bottom: 1.5rem;
+}
+
+#top-red-right {
+  position:absolute;
+  width: 4vw;
+  height: 4vw;
+  margin-left: -5vw;
+  border-left: 3px solid #f00;
+  transform: rotate(-45deg);
+  box-sizing: border-box;
+}
+#top-orange-right {
+  position: absolute;
+  width: 4vw;
+  height: 4vw;
+  margin-left: -3vw;
+  border-left: 3px solid orange;
+  transform: rotate(-45deg);
+  box-sizing: border-box;
+}
+#top-red-left{
+  position: absolute;
+  width: 4vw;
+  height: 4vw;
+  margin-left: 1vw;
+  border-left: 3px solid #f00;
+  transform: rotate(-135deg);
+  box-sizing: border-box;
+}
+#top-orange-left {
+  position: absolute;
+  width: 4vw;
+  height: 4vw;
+  margin-left: -1vw;
+  border-left: 3px solid orange;
+  transform: rotate(-135deg);
+  box-sizing: border-box;
+}
+#top-mcs {
+  font-size: 4vw;
+  margin-bottom: 1rem;
+}
+
+#top img {
+  width: 70vw;
+  max-width: 90rem;
+  height: auto;
+}
+#top strong{
+  color: blue;
+}
+
+#scroll {
+  margin-top: auto;
+  position: relative;
+  width: 10rem;
+  height: 5rem;
+}
+
+#scroll a {
+  color: black;
+  text-decoration: none;
+}
+
+#scroll-arrow {
+  position: absolute;
+  bottom: 0;
+  width: 24px;
+  height: 24px;
+  margin-left: -12px;
+  border-left: 1px solid #000;
+  border-bottom: 1px solid #000;
+  transform: rotate(-45deg);
+  box-sizing: border-box;
+}
+
+/*
+  MAIN
+*/
+
+.main-section {
+  margin: 10rem auto;
+  width: 80%;
+  max-width: 100rem;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+h2 {
+  margin-bottom: 2rem;
+  font-size: 2.5rem;
+}
+.dot_add{
+  -webkit-text-emphasis: filled circle red;
+  text-emphasis: filled circle red;
+}
+/*
+  ABOUT
+*/
+#about p{
+  line-height:3.5rem;
+}
+
+#catchphrase {
+  position: relative;
+  font-weight: bold;
+  font-size: 5.2vw;
+  text-decoration:underline red;
+  line-height:25vw;
+}
+
+#date, #place {
+  font-size: 1.6rem;
+}
+
+/*
+  EVENT
+*/
+li{
+  margin: 4vh;
+}
+table {
+  margin: 2rem 0;
+  border: solid 1px #000000;
+  border-collapse: collapse;
+}
+
+tr > * {
+  padding: 0.5rem 1rem;
+  border: solid 1px #555555;
+}
+#event img{
+  width:100px;
+  max-width: 90rem;
+  height: auto;
+}
+#event div{
+  display: center;
+}
+#place{
+  line-height: 7rem;
+}
+#event p{
+  line-height: 3rem;
+}
+#event h3{
+  line-height: 5rem;
+}
+/*footer*/
+
+footer img{
+  width:100px;
+  max-width: 90rem;
+  height: auto;
+  padding:2vw;
+}
+
+/*font-coloful*/
+
+.color-mix>span{
+  display: inline-block;
+  letter-spacing:0.5rem;
+}
+
+.color-mix span:nth-child(5n+1) {color: #ea535d;}
+.color-mix span:nth-child(5n+2) {color: #ed6d00;}
+.color-mix span:nth-child(5n+3) {color: #6eb92b;}
+.color-mix span:nth-child(5n+4) {color: #8f70af;}
+.color-mix span:nth-child(5n) {color: #68a3d7;}

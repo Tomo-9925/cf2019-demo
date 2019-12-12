@@ -1,0 +1,6 @@
+# バージョン情報削除済み
+flask
+uwsgi
+gevent
+redis
+flask-socketio

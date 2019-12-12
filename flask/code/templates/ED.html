@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=460px" />
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>End</title>
+<script src="{{ url_for('static', filename='socket.io.slim.js') }}"></script>
+<script src="{{ url_for('static', filename='index.js') }}"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='road.css') }}"/>
+</head>
+
+<body>
+	<p><img src="{{ url_for('static', filename='img/rogo.svg') }}"  height="100px"></p>
+	<div class="ed_text">
+		<p><strong>本日はご来場いただき誠に<br/>ありがとうございます。</strong>　<br/>また来年のお越しを心より<br/>お待ちしております。</p>
+		<p>なお、MCSではワッフル屋<br/>「わくわくワッフル」も<br/>営業しています。<br/>是非お越しください。<br/>
+		この後も高槻キャンパス祭をお楽しみください。</p>
+	</div>
+<footer>
+	<img src="{{ url_for('static', filename='img/mcs.svg') }}" class="MCS">
+</fotter>
+
+<script>//socket
+	var socket = io.connect(location.origin+"/socket");
+	socket.on('connect', function(msg) {
+		});
+	socket.on('message', function(msg) {
+	// $('#websocket').text(msg)
+		if(msg=="RELOAD") {
+			location.reload();
+		}
+	});
+</script>
+</body>
+</html>

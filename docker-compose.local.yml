@@ -1,0 +1,35 @@
+version: '3'
+
+# mcs3リポジトリのNginxに接続
+networks:
+  cf2019:
+    external: true
+
+services:
+  flask:
+    build: ./flask
+    container_name: mcs-cf2019-flask
+    expose:
+      - '5000'
+    depends_on:
+      - redis
+    links:
+      - redis:redis
+    networks:
+      - cf2019
+    volumes:
+      - ./flask/code:/code
+    command: python app.py  # デバッグ用
+    # command: uwsgi --http :5000 --gevent 1000 --http-websockets --master --wsgi-file app.py --callable app  # Nginx連携用
+    environment:
+      TZ: Asia/Tokyo
+
+  redis:
+    image: redis:latest
+    container_name: mcs-cf2019-redis
+    expose:
+      - '6379'
+    networks:
+      - cf2019
+    environment:
+      TZ: Asia/Tokyo
